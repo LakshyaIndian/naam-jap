@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
+<meta name="theme-color" content="#1a0a2e"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="apple-mobile-web-app-title" content="Naam Jap"/>
+<meta name="description" content="Premium Naam Jap Counter with game-style UI"/>
+<title>Naam Jap Counter</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@400;600;700&family=MedievalSharp&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --tier: 0;
+    --bg1: #0d0520;
+    --bg2: #1a0a3e;
+    --bg3: #0a1628;
+    --accent1: #f5c518;
+    --accent2: #ff6b35;
+    --accent3: #c084fc;
+    --gem: #00d4ff;
+    --btn-top: #7c3aed;
+    --btn-mid: #4c1d95;
+    --btn-bot: #2d0f6b;
+    --btn-glow: rgba(124,58,237,0.6);
+    --btn-ring: #a855f7;
+    --orb-a: #7c3aed;
+    --orb-b: #4c1d95;
+    --shield-color: #a78bfa;
+    --progress-color: #7c3aed;
+    --text-primary: #f5e6ff;
+    --text-gold: #f5c518;
+    --text-silver: #c0c0d0;
+    --nav-bg: rgba(13,5,32,0.95);
+    --card-bg: rgba(124,58,237,0.12);
+    --card-border: rgba(168,85,247,0.3);
+    --transition-dur: 1.2s;
+  }
+
+  /* TIER THEMES */
+  .tier-1 { /* 1000 - Bronze Dawn */
+    --bg1: #1a0a00; --bg2: #2d1500; --bg3: #0f0800;
+    --accent1: #ff8c00; --accent2: #ffd700; --accent3: #ff6b35;
+    --btn-top: #b45309; --btn-mid: #78350f; --btn-bot: #451a03;
+    --btn-glow: rgba(180,83,9,0.7); --btn-ring: #f59e0b;
+    --orb-a: #d97706; --orb-b: #92400e;
+    --shield-color: #fbbf24; --progress-color: #f59e0b;
+    --text-gold: #ffd700; --card-bg: rgba(180,83,9,0.15);
+    --card-border: rgba(251,191,36,0.35);
+  }
+  .tier-2 { /* 2000 - Silver Storm */
+    --bg1: #0a0f1a; --bg2: #0f1e30; --bg3: #060c14;
+    --accent1: #e2e8f0; --accent2: #94a3b8; --accent3: #7dd3fc;
+    --btn-top: #334155; --btn-mid: #1e293b; --btn-bot: #0f172a;
+    --btn-glow: rgba(148,163,184,0.6); --btn-ring: #94a3b8;
+    --orb-a: #475569; --orb-b: #1e293b;
+    --shield-color: #cbd5e1; --progress-color: #94a3b8;
+    --text-gold: #e2e8f0; --card-bg: rgba(71,85,105,0.18);
+    --card-border: rgba(148,163,184,0.3);
+  }
+  .tier-3 { /* 5000 - Emerald Forest */
+    --bg1: #001a0a; --bg2: #002d15; --bg3: #000f06;
+    --accent1: #10b981; --accent2: #6ee7b7; --accent3: #34d399;
+    --btn-top: #065f46; --btn-mid: #064e3b; --btn-bot: #022c22;
+    --btn-glow: rgba(16,185,129,0.65); --btn-ring: #34d399;
+    --orb-a: #059669; --orb-b: #047857;
+    --shield-color: #6ee7b7; --progress-color: #10b981;
+    --text-gold: #6ee7b7; --card-bg: rgba(6,95,70,0.18);
+    --card-border: rgba(52,211,153,0.35);
+  }
+  .tier-4 { /* 10000 - Ruby Inferno */
+    --bg1: #1a0000; --bg2: #2d0505; --bg3: #0f0000;
+    --accent1: #ef4444; --accent2: #fca5a5; --accent3: #f97316;
+    --btn-top: #991b1b; --btn-mid: #7f1d1d; --btn-bot: #450a0a;
+    --btn-glow: rgba(239,68,68,0.7); --btn-ring: #f87171;
+    --orb-a: #dc2626; --orb-b: #991b1b;
+    --shield-color: #fca5a5; --progress-color: #ef4444;
+    --text-gold: #fca5a5; --card-bg: rgba(153,27,27,0.18);
+    --card-border: rgba(248,113,113,0.35);
+  }
+  .tier-5 { /* 20000 - Sapphire Ocean */
+    --bg1: #00051a; --bg2: #000d2d; --bg3: #00030f;
+    --accent1: #3b82f6; --accent2: #93c5fd; --accent3: #06b6d4;
+    --btn-top: #1d4ed8; --btn-mid: #1e3a8a; --btn-bot: #0f1f4a;
+    --btn-glow: rgba(59,130,246,0.7); --btn-ring: #60a5fa;
+    --orb-a: #2563eb; --orb-b: #1d4ed8;
+    --shield-color: #93c5fd; --progress-color: #3b82f6;
+    --text-gold: #93c5fd; --card-bg: rgba(29,78,216,0.18);
+    --card-border: rgba(96,165,250,0.35);
+  }
+  .tier-6 { /* 50000 - Divine Gold */
+    --bg1: #1a1200; --bg2: #2d1f00; --bg3: #0f0a00;
+    --accent1: #fbbf24; --accent2: #fde68a; --accent3: #f59e0b;
+    --btn-top: #d97706; --btn-mid: #b45309; --btn-bot: #78350f;
+    --btn-glow: rgba(251,191,36,0.8); --btn-ring: #fde68a;
+    --orb-a: #d97706; --orb-b: #b45309;
+    --shield-color: #fde68a; --progress-color: #fbbf24;
+    --text-gold: #fde68a; --card-bg: rgba(217,119,6,0.18);
+    --card-border: rgba(253,230,138,0.45);
+  }
+  .tier-7 { /* 100000 - Cosmic Transcendence */
+    --bg1: #050010; --bg2: #0a001f; --bg3: #020008;
+    --accent1: #e879f9; --accent2: #f0abfc; --accent3: #c026d3;
+    --btn-top: #a21caf; --btn-mid: #701a75; --btn-bot: #3b0764;
+    --btn-glow: rgba(232,121,249,0.8); --btn-ring: #f0abfc;
+    --orb-a: #c026d3; --orb-b: #a21caf;
+    --shield-color: #f0abfc; --progress-color: #e879f9;
+    --text-gold: #f0abfc; --card-bg: rgba(162,28,175,0.2);
+    --card-border: rgba(240,171,252,0.45);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+  body {
+    font-family: 'Cinzel', serif;
+    background: linear-gradient(160deg, var(--bg1) 0%, var(--bg2) 50%, var(--bg3) 100%);
+    color: var(--text-primary);
+    min-height: 100dvh;
+    height: 100dvh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: background var(--transition-dur) ease, color var(--transition-dur) ease;
+    position: relative;
+  }
+
+  /* ANIMATED BACKGROUND */
+  .bg-canvas {
+    position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden;
+  }
+  .star {
+    position: absolute; border-radius: 50%;
+    background: white; animation: twinkle var(--d, 3s) ease-in-out infinite;
+    animation-delay: var(--dl, 0s); opacity: var(--op, 0.6);
+  }
+  @keyframes twinkle { 0%,100%{opacity:var(--op);transform:scale(1)} 50%{opacity:0.1;transform:scale(0.5)} }
+
+  .floating-orb {
+    position: absolute; border-radius: 50%; filter: blur(60px); opacity: 0.2;
+    background: radial-gradient(circle, var(--orb-a), var(--orb-b));
+    animation: orbFloat 8s ease-in-out infinite;
+    transition: background var(--transition-dur) ease;
+  }
+  .orb1 { width: 300px; height: 300px; top: -100px; right: -80px; animation-duration: 7s; }
+  .orb2 { width: 200px; height: 200px; bottom: 80px; left: -60px; animation-duration: 9s; animation-delay: -3s; }
+  @keyframes orbFloat { 0%,100%{transform:translateY(0) scale(1)} 50%{transform:translateY(-30px) scale(1.05)} }
+
+  /* PARTICLE SYSTEM */
+  #particles { position: fixed; inset: 0; pointer-events: none; z-index: 1; }
+
+  /* MAIN LAYOUT */
+  .app { position: relative; z-index: 2; display: flex; flex-direction: column; height: 100dvh; }
+
+  /* ===== TOP BAR ===== */
+  .topbar {
+    padding: 12px 16px 10px;
+    display: flex; justify-content: space-between; align-items: flex-start;
+    background: linear-gradient(180deg, rgba(0,0,0,0.5) 0%, transparent 100%);
+    flex-shrink: 0;
+  }
+  .stat-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 12px; padding: 8px 14px;
+    backdrop-filter: blur(10px);
+    transition: background var(--transition-dur) ease, border-color var(--transition-dur) ease;
+    text-align: center; min-width: 140px;
+  }
+  .stat-label {
+    font-size: 9px; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--text-silver); font-family: 'Cinzel', serif; font-weight: 600;
+    display: flex; align-items: center; gap: 4px; justify-content: center;
+  }
+  .stat-label .icon { font-size: 10px; }
+  .stat-value {
+    font-family: 'Cinzel Decorative', cursive;
+    font-size: 22px; font-weight: 900;
+    color: var(--text-gold);
+    transition: color var(--transition-dur) ease;
+    line-height: 1.1; margin-top: 2px;
+    text-shadow: 0 0 20px var(--accent1);
+  }
+  .stat-sub {
+    font-size: 8px; color: var(--text-silver); letter-spacing: 1px; margin-top: 1px;
+    font-family: 'Cinzel', serif;
+  }
+  .stat-card.alltime { border-color: var(--accent1); }
+  .stat-card.alltime .stat-value { color: var(--accent1); }
+
+  /* TIER BADGE */
+  .tier-badge {
+    position: absolute; top: 12px; left: 50%; transform: translateX(-50%);
+    font-family: 'Cinzel Decorative', cursive; font-size: 8px; font-weight: 700;
+    letter-spacing: 2px; text-transform: uppercase;
+    color: var(--shield-color); opacity: 0.85;
+    text-shadow: 0 0 10px var(--shield-color);
+    transition: color var(--transition-dur) ease;
+    white-space: nowrap;
+  }
+
+  /* ===== CENTER ZONE ===== */
+  .center {
+    flex: 1; display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    padding: 0 20px; gap: 20px; position: relative;
+  }
+
+  /* PROGRESS RING */
+  .progress-ring-wrap {
+    position: relative; width: 280px; height: 280px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .progress-ring-svg { position: absolute; inset: 0; transform: rotate(-90deg); }
+  .ring-track { fill: none; stroke: rgba(255,255,255,0.06); stroke-width: 8; }
+  .ring-fill {
+    fill: none; stroke: var(--progress-color); stroke-width: 8;
+    stroke-linecap: round; stroke-dasharray: 800; stroke-dashoffset: 800;
+    transition: stroke-dashoffset 0.6s ease, stroke var(--transition-dur) ease;
+    filter: drop-shadow(0 0 8px var(--progress-color));
+  }
+
+  /* TAP BUTTON */
+  .tap-btn-wrap {
+    position: relative; width: 220px; height: 220px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .tap-glow-ring {
+    position: absolute; inset: -15px; border-radius: 50%;
+    border: 2px solid var(--btn-ring);
+    opacity: 0.4; animation: ringPulse 2s ease-in-out infinite;
+    transition: border-color var(--transition-dur) ease;
+  }
+  .tap-glow-ring2 {
+    position: absolute; inset: -30px; border-radius: 50%;
+    border: 1px solid var(--btn-ring);
+    opacity: 0.15; animation: ringPulse 2s ease-in-out infinite 0.5s;
+    transition: border-color var(--transition-dur) ease;
+  }
+  @keyframes ringPulse { 0%,100%{transform:scale(1);opacity:0.4} 50%{transform:scale(1.05);opacity:0.2} }
+
+  .tap-btn {
+    width: 200px; height: 200px; border-radius: 50%; border: none;
+    cursor: pointer; position: relative; overflow: hidden;
+    background: radial-gradient(circle at 35% 30%, var(--btn-top), var(--btn-mid) 50%, var(--btn-bot));
+    box-shadow:
+      0 0 40px var(--btn-glow),
+      0 8px 32px rgba(0,0,0,0.6),
+      inset 0 2px 8px rgba(255,255,255,0.15),
+      inset 0 -4px 12px rgba(0,0,0,0.4);
+    transition:
+      background var(--transition-dur) ease,
+      box-shadow var(--transition-dur) ease,
+      transform 0.08s ease;
+    -webkit-user-select: none; user-select: none;
+    animation: btnBreath 3s ease-in-out infinite;
+  }
+  @keyframes btnBreath {
+    0%,100%{ box-shadow: 0 0 40px var(--btn-glow), 0 8px 32px rgba(0,0,0,0.6), inset 0 2px 8px rgba(255,255,255,0.15), inset 0 -4px 12px rgba(0,0,0,0.4); }
+    50%{ box-shadow: 0 0 70px var(--btn-glow), 0 8px 32px rgba(0,0,0,0.6), inset 0 2px 8px rgba(255,255,255,0.15), inset 0 -4px 12px rgba(0,0,0,0.4); }
+  }
+  .tap-btn::before {
+    content: ''; position: absolute; inset: 0; border-radius: 50%;
+    background: radial-gradient(circle at 30% 25%, rgba(255,255,255,0.25) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .tap-btn:active { transform: scale(0.94); }
+  .tap-btn-inner {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    height: 100%; gap: 4px; pointer-events: none;
+  }
+  .tap-symbol { font-size: 52px; line-height: 1; filter: drop-shadow(0 2px 8px rgba(0,0,0,0.5)); }
+  .tap-label {
+    font-family: 'Cinzel Decorative', cursive; font-size: 11px; font-weight: 700;
+    letter-spacing: 3px; text-transform: uppercase; color: rgba(255,255,255,0.8);
+    text-shadow: 0 1px 4px rgba(0,0,0,0.6);
+  }
+  .tap-count-display {
+    font-family: 'Cinzel Decorative', cursive; font-size: 28px; font-weight: 900;
+    color: white; text-shadow: 0 0 20px rgba(255,255,255,0.5);
+    line-height: 1;
+  }
+
+  /* MILESTONE INFO */
+  .milestone-info {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 10px; letter-spacing: 2px; color: var(--text-silver);
+    font-family: 'Cinzel', serif;
+  }
+  .milestone-next { color: var(--text-gold); font-weight: 700; }
+
+  /* ===== BOTTOM NAV ===== */
+  .bottom-nav {
+    padding: 8px 20px 16px;
+    background: linear-gradient(0deg, rgba(0,0,0,0.6) 0%, transparent 100%);
+    flex-shrink: 0;
+  }
+  .nav-pills {
+    display: flex; gap: 10px;
+    background: var(--nav-bg); border: 1px solid var(--card-border);
+    border-radius: 16px; padding: 6px;
+    backdrop-filter: blur(20px);
+    transition: border-color var(--transition-dur) ease;
+  }
+  .nav-btn {
+    flex: 1; display: flex; flex-direction: column; align-items: center;
+    gap: 3px; padding: 10px 8px; border-radius: 12px; border: none;
+    cursor: pointer; background: transparent; color: var(--text-silver);
+    font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 1.5px;
+    text-transform: uppercase; font-weight: 600;
+    transition: all 0.2s ease;
+  }
+  .nav-btn .nav-icon { font-size: 20px; line-height: 1; }
+  .nav-btn.active {
+    background: var(--card-bg); color: var(--text-gold);
+    border: 1px solid var(--card-border);
+    box-shadow: 0 0 15px var(--btn-glow);
+  }
+  .nav-btn:not(.active):hover { color: var(--text-primary); }
+
+  /* ===== PAGES ===== */
+  .page { display: none; flex-direction: column; flex: 1; overflow-y: auto; padding: 16px; gap: 14px; }
+  .page.active { display: flex; }
+  .page-title {
+    font-family: 'Cinzel Decorative', cursive; font-size: 16px; font-weight: 900;
+    color: var(--text-gold); letter-spacing: 2px; text-align: center;
+    text-shadow: 0 0 20px var(--accent1);
+    padding-bottom: 8px; border-bottom: 1px solid var(--card-border);
+    transition: color var(--transition-dur) ease;
+  }
+
+  /* DASHBOARD */
+  .dashboard-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .dash-card {
+    background: var(--card-bg); border: 1px solid var(--card-border);
+    border-radius: 14px; padding: 14px; backdrop-filter: blur(10px);
+    transition: background var(--transition-dur) ease, border-color var(--transition-dur) ease;
+    position: relative; overflow: hidden;
+  }
+  .dash-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--accent1), transparent);
+    opacity: 0.6;
+  }
+  .dash-card.full { grid-column: 1 / -1; }
+  .dash-card-label {
+    font-size: 9px; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--text-silver); margin-bottom: 6px; font-weight: 600;
+  }
+  .dash-card-value {
+    font-family: 'Cinzel Decorative', cursive; font-size: 24px; font-weight: 900;
+    color: var(--text-gold); text-shadow: 0 0 15px var(--accent1);
+    transition: color var(--transition-dur) ease;
+  }
+  .dash-card-sub { font-size: 9px; color: var(--text-silver); margin-top: 4px; }
+
+  .streak-flames { font-size: 20px; display: flex; gap: 3px; margin-bottom: 4px; }
+
+  /* TIER LADDER */
+  .tier-ladder { display: flex; flex-direction: column; gap: 6px; }
+  .tier-row {
+    display: flex; align-items: center; gap: 10px; padding: 8px 12px;
+    border-radius: 10px; background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06); transition: all 0.3s ease;
+  }
+  .tier-row.reached { background: var(--card-bg); border-color: var(--card-border); }
+  .tier-row.current { border-color: var(--accent1); background: rgba(255,255,255,0.07); }
+  .tier-icon { font-size: 20px; width: 28px; text-align: center; }
+  .tier-row-info { flex: 1; }
+  .tier-row-name { font-size: 11px; font-weight: 700; color: var(--text-primary); }
+  .tier-row-req { font-size: 9px; color: var(--text-silver); letter-spacing: 1px; }
+  .tier-row-check { font-size: 16px; }
+
+  /* HISTORY */
+  .history-list { display: flex; flex-direction: column; gap: 8px; }
+  .history-item {
+    background: var(--card-bg); border: 1px solid var(--card-border);
+    border-radius: 12px; padding: 12px 16px; display: flex;
+    align-items: center; gap: 12px;
+    transition: background var(--transition-dur) ease, border-color var(--transition-dur) ease;
+  }
+  .history-date { font-size: 10px; color: var(--text-silver); min-width: 80px; letter-spacing: 1px; }
+  .history-count {
+    font-family: 'Cinzel Decorative', cursive; font-size: 18px; font-weight: 900;
+    color: var(--text-gold); margin-left: auto;
+    transition: color var(--transition-dur) ease;
+  }
+  .history-bar-wrap { flex: 1; height: 4px; background: rgba(255,255,255,0.08); border-radius: 2px; }
+  .history-bar { height: 100%; border-radius: 2px; background: var(--progress-color); transition: background var(--transition-dur) ease; }
+  .no-history { text-align: center; color: var(--text-silver); font-size: 12px; padding: 30px; letter-spacing: 1px; opacity: 0.6; }
+
+  /* MILESTONE OVERLAY */
+  .milestone-overlay {
+    position: fixed; inset: 0; z-index: 100; pointer-events: none;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(0,0,0,0); transition: background 0.3s ease;
+  }
+  .milestone-overlay.active { pointer-events: all; background: rgba(0,0,0,0.75); }
+  .milestone-card {
+    background: linear-gradient(135deg, var(--bg2), var(--bg1));
+    border: 2px solid var(--accent1);
+    border-radius: 24px; padding: 40px 32px; text-align: center;
+    max-width: 300px; width: 90%;
+    box-shadow: 0 0 60px var(--btn-glow), 0 20px 60px rgba(0,0,0,0.8);
+    transform: scale(0); opacity: 0;
+    transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1), opacity 0.4s ease;
+  }
+  .milestone-overlay.active .milestone-card { transform: scale(1); opacity: 1; }
+  .milestone-card-icon { font-size: 64px; margin-bottom: 12px; animation: celebSpin 0.8s ease; }
+  @keyframes celebSpin { 0%{transform:rotate(-20deg) scale(0)} 60%{transform:rotate(10deg) scale(1.2)} 100%{transform:rotate(0) scale(1)} }
+  .milestone-card-title {
+    font-family: 'Cinzel Decorative', cursive; font-size: 20px; font-weight: 900;
+    color: var(--text-gold); margin-bottom: 8px; text-shadow: 0 0 20px var(--accent1);
+  }
+  .milestone-card-subtitle { font-size: 12px; color: var(--text-silver); letter-spacing: 2px; margin-bottom: 20px; }
+  .milestone-card-close {
+    background: var(--btn-top); border: 1px solid var(--btn-ring); color: white;
+    font-family: 'Cinzel', serif; font-size: 11px; font-weight: 700;
+    letter-spacing: 2px; padding: 10px 28px; border-radius: 10px; cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .milestone-card-close:hover { background: var(--btn-mid); transform: scale(1.05); }
+
+  /* FLOATING COUNTER ANIM */
+  .float-num {
+    position: fixed; pointer-events: none; z-index: 50;
+    font-family: 'Cinzel Decorative', cursive; font-size: 28px; font-weight: 900;
+    color: var(--text-gold); text-shadow: 0 0 20px var(--accent1);
+    animation: floatUp 0.9s ease forwards;
+  }
+  @keyframes floatUp {
+    0%{opacity:1;transform:translateY(0) scale(1)}
+    60%{opacity:1;transform:translateY(-60px) scale(1.3)}
+    100%{opacity:0;transform:translateY(-110px) scale(0.8)}
+  }
+
+  /* RIPPLE */
+  .ripple {
+    position: absolute; border-radius: 50%;
+    background: rgba(255,255,255,0.25); pointer-events: none;
+    animation: rippleOut 0.6s ease forwards;
+  }
+  @keyframes rippleOut {
+    0%{transform:scale(0);opacity:1}
+    100%{transform:scale(3);opacity:0}
+  }
+
+  /* SCROLLBAR */
+  .page::-webkit-scrollbar { width: 3px; }
+  .page::-webkit-scrollbar-track { background: transparent; }
+  .page::-webkit-scrollbar-thumb { background: var(--card-border); border-radius: 2px; }
+
+  /* RESET BTN */
+  .reset-area { display: flex; justify-content: center; padding-top: 8px; }
+  .reset-btn {
+    background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3);
+    color: rgba(239,68,68,0.7); font-family: 'Cinzel', serif; font-size: 9px;
+    letter-spacing: 2px; padding: 8px 20px; border-radius: 8px; cursor: pointer;
+    transition: all 0.2s ease; text-transform: uppercase;
+  }
+  .reset-btn:hover { background: rgba(239,68,68,0.2); color: #ef4444; }
+
+  /* DATE DISPLAY */
+  .today-date {
+    text-align: center; font-size: 9px; letter-spacing: 3px;
+    color: rgba(255,255,255,0.25); font-family: 'Cinzel', serif;
+    text-transform: uppercase; padding-top: 4px;
+  }
+
+  /* CONFETTI PARTICLE */
+  .confetti-p {
+    position: fixed; pointer-events: none; z-index: 90; border-radius: 2px;
+    animation: confettiFall var(--cd, 2s) ease forwards;
+  }
+  @keyframes confettiFall {
+    0%{transform:translateY(-20px) rotate(0deg);opacity:1}
+    100%{transform:translateY(100vh) rotate(720deg);opacity:0}
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-canvas" id="bgCanvas">
+  <div class="floating-orb orb1"></div>
+  <div class="floating-orb orb2"></div>
+</div>
+<canvas id="particles"></canvas>
+
+<div class="app">
+  <!-- TOP BAR -->
+  <div class="topbar" id="topbar">
+    <div class="stat-card today">
+      <div class="stat-label"><span class="icon">☀️</span> Today</div>
+      <div class="stat-value" id="todayCount">0</div>
+      <div class="stat-sub">जप count</div>
+    </div>
+    <div class="tier-badge" id="tierBadge">✦ Seeker ✦</div>
+    <div class="stat-card alltime">
+      <div class="stat-label"><span class="icon">👑</span> All Time High</div>
+      <div class="stat-value" id="athCount">0</div>
+      <div class="stat-sub" id="athDate">—</div>
+    </div>
+  </div>
+
+  <!-- HOME PAGE -->
+  <div class="page active" id="homePage">
+    <div class="center">
+      <div class="progress-ring-wrap">
+        <svg class="progress-ring-svg" viewBox="0 0 280 280">
+          <circle class="ring-track" cx="140" cy="140" r="127"/>
+          <circle class="ring-fill" id="ringFill" cx="140" cy="140" r="127"/>
+        </svg>
+        <div class="tap-btn-wrap">
+          <div class="tap-glow-ring2"></div>
+          <div class="tap-glow-ring"></div>
+          <button class="tap-btn" id="tapBtn" aria-label="Count Jap">
+            <div class="tap-btn-inner">
+              <div class="tap-symbol" id="tapSymbol">🕉️</div>
+              <div class="tap-count-display" id="tapDisplay">0</div>
+              <div class="tap-label">TAP TO JAP</div>
+            </div>
+          </button>
+        </div>
+      </div>
+      <div class="milestone-info">
+        <span>Next:</span>
+        <span class="milestone-next" id="nextMilestone">1,000</span>
+        <span>·</span>
+        <span id="remainCount">1,000 remaining</span>
+      </div>
+      <div class="today-date" id="todayDateLabel"></div>
+    </div>
+  </div>
+
+  <!-- DASHBOARD PAGE -->
+  <div class="page" id="dashPage">
+    <div class="page-title">⚔️ Dashboard ⚔️</div>
+    <div class="dashboard-grid">
+      <div class="dash-card">
+        <div class="dash-card-label">🌅 Today</div>
+        <div class="dash-card-value" id="dToday">0</div>
+        <div class="dash-card-sub">जप counted</div>
+      </div>
+      <div class="dash-card">
+        <div class="dash-card-label">📅 Yesterday</div>
+        <div class="dash-card-value" id="dYesterday">0</div>
+        <div class="dash-card-sub">जप counted</div>
+      </div>
+      <div class="dash-card">
+        <div class="dash-card-label">🔥 Streak</div>
+        <div class="streak-flames" id="streakFlames">🔥</div>
+        <div class="dash-card-value" id="dStreak">0</div>
+        <div class="dash-card-sub">days active</div>
+      </div>
+      <div class="dash-card">
+        <div class="dash-card-label">📊 7-Day Avg</div>
+        <div class="dash-card-value" id="dAvg">0</div>
+        <div class="dash-card-sub">per day</div>
+      </div>
+      <div class="dash-card full">
+        <div class="dash-card-label">⭐ Total All Time</div>
+        <div class="dash-card-value" id="dTotal">0</div>
+        <div class="dash-card-sub" id="dTotalSub">Keep going, every जप counts!</div>
+      </div>
+    </div>
+
+    <div class="page-title" style="margin-top:8px">🏆 Tier Progression</div>
+    <div class="tier-ladder" id="tierLadder"></div>
+
+    <div class="reset-area">
+      <button class="reset-btn" id="resetBtn">⚠ Reset Today's Count</button>
+    </div>
+  </div>
+
+  <!-- HISTORY PAGE -->
+  <div class="page" id="histPage">
+    <div class="page-title">📜 History</div>
+    <div class="history-list" id="historyList"></div>
+  </div>
+
+  <!-- BOTTOM NAV -->
+  <div class="bottom-nav">
+    <div class="nav-pills">
+      <button class="nav-btn active" data-page="homePage" onclick="switchPage('homePage',this)">
+        <span class="nav-icon">🕉️</span>
+        <span>Jap</span>
+      </button>
+      <button class="nav-btn" data-page="dashPage" onclick="switchPage('dashPage',this)">
+        <span class="nav-icon">⚔️</span>
+        <span>Dashboard</span>
+      </button>
+      <button class="nav-btn" data-page="histPage" onclick="switchPage('histPage',this)">
+        <span class="nav-icon">📜</span>
+        <span>History</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- MILESTONE OVERLAY -->
+<div class="milestone-overlay" id="milestoneOverlay">
+  <div class="milestone-card">
+    <div class="milestone-card-icon" id="milestoneIcon">🏆</div>
+    <div class="milestone-card-title" id="milestoneTitle">Milestone!</div>
+    <div class="milestone-card-subtitle" id="milestoneSubtitle">You've reached a new level</div>
+    <button class="milestone-card-close" onclick="closeMilestone()">✦ CONTINUE ✦</button>
+  </div>
+</div>
+
+<script>
+// ============================================================
+// DATA & CONSTANTS
+// ============================================================
+const MILESTONES = [
+  { count: 1000,   tier: 1, name: 'Bronze Dawn',        icon: '🥉', symbol: '🙏', badge: '✦ Devotee ✦',      msg: 'You have awakened the path!' },
+  { count: 2000,   tier: 2, name: 'Silver Storm',       icon: '🥈', symbol: '🌙', badge: '✦ Practitioner ✦', msg: 'Your dedication shines bright!' },
+  { count: 5000,   tier: 3, name: 'Emerald Forest',     icon: '💚', symbol: '🌿', badge: '✦ Sadhak ✦',       msg: 'The forest of devotion blooms!' },
+  { count: 10000,  tier: 4, name: 'Ruby Inferno',       icon: '🔴', symbol: '🔥', badge: '✦ Yogi ✦',         msg: 'The fire of knowledge burns within!' },
+  { count: 20000,  tier: 5, name: 'Sapphire Ocean',     icon: '💙', symbol: '🌊', badge: '✦ Siddha ✦',       msg: 'You flow like the cosmic ocean!' },
+  { count: 50000,  tier: 6, name: 'Divine Gold',        icon: '🌟', symbol: '⭐', badge: '✦ Mahatma ✦',      msg: 'The divine light shines through you!' },
+  { count: 100000, tier: 7, name: 'Cosmic Transcendence', icon: '🌌', symbol: '🕉️', badge: '✦ Param Sant ✦', msg: 'You have transcended the mortal realm!' },
+];
+
+const TIER_NAMES = ['', 'Bronze Dawn', 'Silver Storm', 'Emerald Forest', 'Ruby Inferno', 'Sapphire Ocean', 'Divine Gold', 'Cosmic Transcendence'];
+const DEFAULT_SYMBOL = '🕉️';
+
+function getKey(k) { try { return localStorage.getItem(k); } catch(e) { return null; } }
+function setKey(k,v) { try { localStorage.setItem(k,v); } catch(e) {} }
+
+function todayStr() {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
+function fmtDate(str) {
+  if (!str || str === '—') return '—';
+  const [y,m,d] = str.split('-');
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  return `${d} ${months[parseInt(m)-1]} ${y}`;
+}
+function fmtNum(n) { return Number(n).toLocaleString('en-IN'); }
+
+// ============================================================
+// STATE
+// ============================================================
+let state = {
+  todayCount: 0,
+  todayDate: todayStr(),
+  allTimeHigh: 0,
+  athDate: '—',
+  totalCount: 0,
+  currentTier: 0,
+  history: [],   // [{date, count}]
+  streak: 0,
+  lastActiveDate: '',
+};
+
+function loadState() {
+  try {
+    const saved = getKey('namjap_state');
+    if (saved) state = { ...state, ...JSON.parse(saved) };
+    // Ensure arrays
+    if (!Array.isArray(state.history)) state.history = [];
+    checkDayReset();
+  } catch(e) {}
+}
+
+function saveState() {
+  try { setKey('namjap_state', JSON.stringify(state)); } catch(e) {}
+}
+
+function checkDayReset() {
+  const today = todayStr();
+  if (state.todayDate !== today) {
+    // Archive yesterday
+    if (state.todayCount > 0) {
+      state.history.unshift({ date: state.todayDate, count: state.todayCount });
+      if (state.history.length > 60) state.history = state.history.slice(0, 60);
+    }
+    // Update streak
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    const yStr = `${yesterday.getFullYear()}-${String(yesterday.getMonth()+1).padStart(2,'0')}-${String(yesterday.getDate()).padStart(2,'0')}`;
+    if (state.lastActiveDate === yStr || state.lastActiveDate === state.todayDate) {
+      if (state.todayCount > 0) state.streak = (state.streak || 0) + 1;
+    } else if (state.todayCount === 0) {
+      state.streak = 0;
+    }
+    // Reset today
+    state.todayCount = 0;
+    state.todayDate = today;
+    saveState();
+  }
+}
+
+// ============================================================
+// TIER LOGIC
+// ============================================================
+function getTier(count) {
+  let tier = 0;
+  for (const m of MILESTONES) { if (count >= m.count) tier = m.tier; else break; }
+  return tier;
+}
+
+function getNextMilestone(count) {
+  for (const m of MILESTONES) { if (count < m.count) return m; }
+  return null;
+}
+
+function applyTier(tier, animate = false) {
+  const body = document.body;
+  // Remove all tier classes
+  body.classList.remove(...Array.from({length:7},(_,i)=>`tier-${i+1}`));
+  if (tier > 0) body.classList.add(`tier-${tier}`);
+  
+  const ms = MILESTONES.find(m => m.tier === tier);
+  const symbol = ms ? ms.symbol : DEFAULT_SYMBOL;
+  document.getElementById('tapSymbol').textContent = symbol;
+  
+  const badge = ms ? ms.badge : '✦ Seeker ✦';
+  document.getElementById('tierBadge').textContent = badge;
+}
+
+// ============================================================
+// UI UPDATE
+// ============================================================
+function updateUI() {
+  const today = state.todayCount;
+  const total = state.totalCount;
+  
+  document.getElementById('todayCount').textContent = fmtNum(today);
+  document.getElementById('tapDisplay').textContent = fmtNum(today);
+  document.getElementById('athCount').textContent = fmtNum(state.allTimeHigh);
+  document.getElementById('athDate').textContent = fmtDate(state.athDate);
+  
+  // Progress ring
+  const next = getNextMilestone(total);
+  const prev = MILESTONES.filter(m => total >= m.count).slice(-1)[0];
+  const prevCount = prev ? prev.count : 0;
+  const nextCount = next ? next.count : MILESTONES[MILESTONES.length-1].count;
+  let pct = next ? (total - prevCount) / (nextCount - prevCount) : 1;
+  pct = Math.min(1, Math.max(0, pct));
+  const circ = 2 * Math.PI * 127;
+  const ring = document.getElementById('ringFill');
+  ring.style.strokeDasharray = circ;
+  ring.style.strokeDashoffset = circ * (1 - pct);
+  
+  // Next milestone
+  if (next) {
+    document.getElementById('nextMilestone').textContent = fmtNum(next.count);
+    document.getElementById('remainCount').textContent = `${fmtNum(next.count - total)} remaining`;
+  } else {
+    document.getElementById('nextMilestone').textContent = '∞';
+    document.getElementById('remainCount').textContent = 'All tiers unlocked!';
+  }
+  
+  // Date label
+  const d = new Date();
+  document.getElementById('todayDateLabel').textContent = d.toLocaleDateString('en-IN', {weekday:'long',day:'numeric',month:'long'}).toUpperCase();
+  
+  updateDashboard();
+  updateHistory();
+}
+
+function updateDashboard() {
+  document.getElementById('dToday').textContent = fmtNum(state.todayCount);
+  const yest = state.history[0];
+  document.getElementById('dYesterday').textContent = yest ? fmtNum(yest.count) : '0';
+  document.getElementById('dStreak').textContent = state.streak || 0;
+  document.getElementById('dTotal').textContent = fmtNum(state.totalCount);
+  
+  // 7-day avg
+  const last7 = state.history.slice(0,7);
+  const avg = last7.length ? Math.round(last7.reduce((a,b)=>a+b.count,0)/last7.length) : state.todayCount;
+  document.getElementById('dAvg').textContent = fmtNum(avg);
+  
+  // Streak flames
+  const flames = Math.min(state.streak || 0, 7);
+  document.getElementById('streakFlames').textContent = flames > 0 ? '🔥'.repeat(flames) : '💤';
+  
+  // Total sub
+  const tier = state.currentTier;
+  const msgs = ['Keep going, every जप counts!','Bronze Devotee! Rising higher!','Silver Practitioner! Shine on!','Emerald Sadhak! Growing strong!','Ruby Yogi! Burning bright!','Sapphire Siddha! Ocean of devotion!','Golden Mahatma! Divine light!','Cosmic! You\'ve transcended!'];
+  document.getElementById('dTotalSub').textContent = msgs[tier] || msgs[0];
+  
+  // Tier ladder
+  const ladder = document.getElementById('tierLadder');
+  ladder.innerHTML = '';
+  const tierDefs = [
+    { req: 0,      name: 'Seeker',              icon: '🌱' },
+    ...MILESTONES.map(m => ({ req: m.count, name: m.name, icon: m.icon }))
+  ];
+  tierDefs.forEach((t, i) => {
+    const reached = state.totalCount >= t.req;
+    const current = i === state.currentTier;
+    const row = document.createElement('div');
+    row.className = `tier-row${reached?' reached':''}${current?' current':''}`;
+    row.innerHTML = `
+      <div class="tier-icon">${t.icon}</div>
+      <div class="tier-row-info">
+        <div class="tier-row-name">${t.name}</div>
+        <div class="tier-row-req">${t.req === 0 ? 'Starting tier' : fmtNum(t.req)+' जप'}</div>
+      </div>
+      <div class="tier-row-check">${reached ? '✅' : (current ? '👉' : '🔒')}</div>
+    `;
+    ladder.appendChild(row);
+  });
+}
+
+function updateHistory() {
+  const list = document.getElementById('historyList');
+  list.innerHTML = '';
+  const all = [{ date: state.todayDate, count: state.todayCount }, ...state.history];
+  if (all.length === 0 || (all.length === 1 && all[0].count === 0)) {
+    list.innerHTML = '<div class="no-history">No history yet.<br>Start your जप journey!</div>';
+    return;
+  }
+  const maxCount = Math.max(...all.map(h => h.count), 1);
+  all.forEach((h, i) => {
+    if (h.count === 0 && i > 0) return;
+    const item = document.createElement('div');
+    item.className = 'history-item';
+    const pct = (h.count / maxCount) * 100;
+    item.innerHTML = `
+      <div class="history-date">${i===0?'TODAY':fmtDate(h.date)}</div>
+      <div class="history-bar-wrap"><div class="history-bar" style="width:${pct}%"></div></div>
+      <div class="history-count">${fmtNum(h.count)}</div>
+    `;
+    list.appendChild(item);
+  });
+}
+
+// ============================================================
+// TAP LOGIC
+// ============================================================
+function handleTap(e) {
+  // Ripple
+  const btn = document.getElementById('tapBtn');
+  const rect = btn.getBoundingClientRect();
+  const x = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
+  const y = (e.touches ? e.touches[0].clientY : e.clientY) - rect.top;
+  const ripple = document.createElement('div');
+  ripple.className = 'ripple';
+  ripple.style.cssText = `left:${x-25}px;top:${y-25}px;width:50px;height:50px`;
+  btn.appendChild(ripple);
+  setTimeout(()=>ripple.remove(), 600);
+  
+  // Floating number
+  spawnFloat(e);
+  
+  state.todayCount++;
+  state.totalCount++;
+  state.lastActiveDate = state.todayDate;
+  
+  // All time high check
+  if (state.todayCount > state.allTimeHigh) {
+    state.allTimeHigh = state.todayCount;
+    state.athDate = state.todayDate;
+  }
+  
+  // Tier check
+  const newTier = getTier(state.totalCount);
+  if (newTier !== state.currentTier) {
+    state.currentTier = newTier;
+    applyTier(newTier, true);
+    const ms = MILESTONES.find(m => m.tier === newTier);
+    if (ms) showMilestone(ms);
+  }
+  
+  saveState();
+  updateUI();
+  
+  // Haptic
+  if (navigator.vibrate) navigator.vibrate(15);
+}
+
+function spawnFloat(e) {
+  const el = document.createElement('div');
+  el.className = 'float-num';
+  el.textContent = '+1';
+  const x = (e.touches ? e.touches[0].clientX : e.clientX);
+  const y = (e.touches ? e.touches[0].clientY : e.clientY);
+  el.style.cssText = `left:${x-20}px;top:${y-30}px`;
+  document.body.appendChild(el);
+  setTimeout(()=>el.remove(), 900);
+}
+
+// ============================================================
+// MILESTONE
+// ============================================================
+function showMilestone(ms) {
+  document.getElementById('milestoneIcon').textContent = ms.icon;
+  document.getElementById('milestoneTitle').textContent = ms.name;
+  document.getElementById('milestoneSubtitle').textContent = ms.msg;
+  document.getElementById('milestoneOverlay').classList.add('active');
+  spawnConfetti();
+}
+
+function closeMilestone() {
+  document.getElementById('milestoneOverlay').classList.remove('active');
+}
+
+function spawnConfetti() {
+  const colors = ['#f5c518','#ff6b35','#a855f7','#10b981','#3b82f6','#ef4444','#fbbf24'];
+  for (let i = 0; i < 60; i++) {
+    const el = document.createElement('div');
+    el.className = 'confetti-p';
+    const size = Math.random() * 10 + 6;
+    const color = colors[Math.floor(Math.random() * colors.length)];
+    const dur = (Math.random() * 1.5 + 1.5).toFixed(1);
+    el.style.cssText = `
+      left:${Math.random()*100}vw; top:-20px;
+      width:${size}px; height:${size}px;
+      background:${color}; opacity:1;
+      --cd:${dur}s;
+      animation-delay:${(Math.random()*0.5).toFixed(2)}s;
+    `;
+    document.body.appendChild(el);
+    setTimeout(()=>el.remove(), (parseFloat(dur)+0.5)*1000);
+  }
+}
+
+// ============================================================
+// NAVIGATION
+// ============================================================
+function switchPage(pageId, btn) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(pageId).classList.add('active');
+  btn.classList.add('active');
+  if (pageId === 'dashPage' || pageId === 'histPage') {
+    updateDashboard();
+    updateHistory();
+  }
+}
+
+// ============================================================
+// BACKGROUND STARS
+// ============================================================
+function initStars() {
+  const canvas = document.getElementById('bgCanvas');
+  for (let i = 0; i < 80; i++) {
+    const star = document.createElement('div');
+    star.className = 'star';
+    const size = Math.random() * 2.5 + 0.5;
+    star.style.cssText = `
+      left:${Math.random()*100}%;top:${Math.random()*100}%;
+      width:${size}px;height:${size}px;
+      --d:${(Math.random()*4+2).toFixed(1)}s;
+      --dl:${(Math.random()*4).toFixed(1)}s;
+      --op:${(Math.random()*0.6+0.1).toFixed(2)};
+    `;
+    canvas.appendChild(star);
+  }
+}
+
+// ============================================================
+// PARTICLE CANVAS
+// ============================================================
+(function initParticles() {
+  const canvas = document.getElementById('particles');
+  const ctx = canvas.getContext('2d');
+  let particles = [];
+  
+  function resize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  window.addEventListener('resize', resize);
+  resize();
+  
+  function randParticle() {
+    return {
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      vx: (Math.random()-0.5)*0.3,
+      vy: -Math.random()*0.5-0.1,
+      life: 1, decay: Math.random()*0.002+0.001,
+      size: Math.random()*2+0.5,
+    };
+  }
+  for (let i=0;i<30;i++) particles.push(randParticle());
+  
+  function animate() {
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    if (particles.length < 30) particles.push(randParticle());
+    particles = particles.filter(p=>{
+      p.x += p.vx; p.y += p.vy; p.life -= p.decay;
+      if (p.life <= 0) return false;
+      ctx.globalAlpha = p.life * 0.3;
+      ctx.fillStyle = '#a855f7';
+      ctx.beginPath();
+      ctx.arc(p.x,p.y,p.size,0,Math.PI*2);
+      ctx.fill();
+      return true;
+    });
+    ctx.globalAlpha = 1;
+    requestAnimationFrame(animate);
+  }
+  animate();
+})();
+
+// ============================================================
+// RESET TODAY
+// ============================================================
+document.getElementById('resetBtn').addEventListener('click', function() {
+  if (confirm('Reset today\'s count to 0? This cannot be undone.')) {
+    state.todayCount = 0;
+    saveState();
+    updateUI();
+  }
+});
+
+// ============================================================
+// DAILY RESET CHECK (every minute)
+// ============================================================
+setInterval(() => {
+  checkDayReset();
+  updateUI();
+}, 60000);
+
+// ============================================================
+// TAP BUTTON
+// ============================================================
+const tapBtn = document.getElementById('tapBtn');
+tapBtn.addEventListener('touchstart', function(e) {
+  e.preventDefault();
+  handleTap(e);
+}, { passive: false });
+tapBtn.addEventListener('click', function(e) {
+  if (e.pointerType !== 'touch') handleTap(e);
+});
+
+// ============================================================
+// INIT
+// ============================================================
+loadState();
+applyTier(state.currentTier);
+initStars();
+updateUI();
+</script>
+</body>
+</html>
